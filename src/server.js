@@ -41,13 +41,6 @@ const server = net.createServer((socket) => {
   let email = null;
   let interval = null;
 
-  process.on("message", (msg) => {
-    if (msg.type === "EVENT_END" && interval) {
-      clearInterval(interval);
-      interval = null;
-    }
-  });
-
   socket.on("data", (data) => {
     const msg = data.toString().trim();
     const db = getDatabase();
@@ -58,7 +51,6 @@ const server = net.createServer((socket) => {
       if (!customerList.has(email)) customers.addCustomer(email);
       console.log(`[TCP] ${email} 접속`);
 
-      // interval 생성은 최초 email 등록 시 한 번만
       interval = setInterval(() => {
         const customer = customerList.get(email);
         if (!customer || customer.disqualified) return;

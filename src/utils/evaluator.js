@@ -31,17 +31,4 @@ export const evaluateWinner = (results) => {
     clickCount: winner.clickCount,
     lastClick: winner.lastClick,
   });
-
-  // TCP 소켓으로 우승자 메시지 전송
-  const socket = getCustomerSocket(winner.email);
-  console.log("socket : ", socket);
-
-  if (socket) {
-    socket.write(`WINNER:${winner.email}\n`, () => {
-      console.log(`[evaluator] 우승자 메시지 전송 완료: ${winner.email}`);
-      socket.end();
-    });
-  } else {
-    console.warn(`[evaluator] 우승자 소켓 없음: ${winner.email}`);
-  }
 };
